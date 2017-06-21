@@ -3,11 +3,19 @@
 # Starts a scan of available broadcasting SSIDs
 # nmcli dev wifi rescan
 
-# Get values from config
-FIELDS=$(grep "fields=" config | awk -F "=" {'print $2'})
-POSITION=$(grep "position=" config | awk -F "=" {'print $2'})
-YOFF=$(grep "yoffset=" config | awk -F "=" {'print $2'})
-XOFF=$(grep "xoffset=" config | awk -F "=" {'print $2'})
+if [ ! -f ./config ]; then
+	echo "WARNING: config file not found! Using default values."
+	FIELDS=SSID,SECURITY
+	POSITION=0
+	YOFF=0
+	XOFF=0
+elif [ -f ./config ]; then
+	# Get values from config
+	FIELDS=$(grep "fields=" config | awk -F "=" {'print $2'})
+	POSITION=$(grep "position=" config | awk -F "=" {'print $2'})
+	YOFF=$(grep "yoffset=" config | awk -F "=" {'print $2'})
+	XOFF=$(grep "xoffset=" config | awk -F "=" {'print $2'})
+fi
 
 
 LIST=$(nmcli --fields "IN-USE,$FIELDS" device wifi list)
