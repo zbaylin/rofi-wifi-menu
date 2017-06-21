@@ -3,8 +3,14 @@
 # Starts a scan of available broadcasting SSIDs
 # nmcli dev wifi rescan
 
+# Get values from config
+FIELDS=$(grep "fields=" config | awk -F "=" {'print $2'})
+POSITION=$(grep "position=" config | awk -F "=" {'print $2'})
+YOFF=$(grep "yoffset=" config | awk -F "=" {'print $2'})
+XOFF=$(grep "xoffset=" config | awk -F "=" {'print $2'})
 
-LIST=$(nmcli --fields "IN-USE,ssid,security,bars" device wifi list)
+
+LIST=$(nmcli --fields "IN-USE,$FIELDS" device wifi list)
 # For some reason rofi always approximates character width 2 short... hmmm
 RWIDTH=$(($(echo "$LIST" | head -n 1 | awk '{print length($0); }')+2))
 # Dynamically change the height of the rofi menu
@@ -31,10 +37,10 @@ fi
 
 
 
-CHENTRY=$(echo -e "$TOGGLE\n$LIST\nmanual" | sed '/--/,+1 d' | uniq -u | rofi -dmenu -p "Wi-Fi SSID: " -lines $LINENUM -location 3 -yoffset 17 -font "DejaVu Sans Mono 8" -width -$RWIDTH)
+CHENTRY=$(echo -e "$TOGGLE\n$LIST\nmanual" | sed '/--/,+1 d' | uniq -u | rofi -dmenu -p "Wi-Fi SSID: " -lines $LINENUM -location $POSITION -yoffset $YOFF -xoffset $XOFF -font "DejaVu Sans Mono 8" -width -$RWIDTH)
 #echo "$CHENTRY"
 CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $2}')
-echo "$CHSSID"
+#echo "$CHSSID"
 
 # If the user inputs "manual" as their SSID in the start window, it will bring them to this screen
 if [ "$CHENTRY" = "manual" ] ; then
