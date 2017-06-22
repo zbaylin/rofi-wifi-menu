@@ -2,6 +2,7 @@
 A wifi menu for i3/openbox/etc. written in bash. Uses rofi and nmcli.
 
 ## Table of Contents
+* [Screenshots](#screenshots)
 * [Requirements](#requirements)
   * [Optional](#optional)
 * [Installation](#installation)
@@ -11,6 +12,20 @@ A wifi menu for i3/openbox/etc. written in bash. Uses rofi and nmcli.
   * [x-offset](#x-offset)
   * [fields](#fields)
 * [ToDo](#todo)
+
+### Screenshots
+
+#### Desktop
+![Desktop](https://raw.githubusercontent.com/zbaylin/rofi-wifi-menu/master/screenshots/rofi-wifi-menu-desktop.png)
+
+#### Default
+![Default](https://raw.githubusercontent.com/zbaylin/rofi-wifi-menu/master/screenshots/rofi-wifi-menu-default.png)
+
+#### Manual Entry
+![Manual Entry](https://raw.githubusercontent.com/zbaylin/rofi-wifi-menu/master/screenshots/rofi-wifi-menu-manual.png)
+
+#### Toggle On
+![Toggle On](https://raw.githubusercontent.com/zbaylin/rofi-wifi-menu/master/screenshots/rofi-wifi-menu-toggleon.png)
 
 ### Requirements
 
