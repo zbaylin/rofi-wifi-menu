@@ -3,18 +3,19 @@
 # Starts a scan of available broadcasting SSIDs
 # nmcli dev wifi rescan
 
-if [ ! -f ./config ]; then
+if [ ! -r ./config ]; then
 	echo "WARNING: config file not found! Using default values."
 	FIELDS=SSID,SECURITY
 	POSITION=0
 	YOFF=0
 	XOFF=0
-elif [ -f ./config ]; then
+elif [ -r ./config ]; then
 	# Get values from config
-	FIELDS=$(grep "fields=" config | awk -F "=" {'print $2'})
-	POSITION=$(grep "position=" config | awk -F "=" {'print $2'})
-	YOFF=$(grep "yoffset=" config | awk -F "=" {'print $2'})
-	XOFF=$(grep "xoffset=" config | awk -F "=" {'print $2'})
+	source ./config
+#	FIELDS=$(grep "fields=" config | awk -F "=" {'print $2'})
+#	POSITION=$(grep "position=" config | awk -F "=" {'print $2'})
+#	YOFF=$(grep "yoffset=" config | awk -F "=" {'print $2'})
+#	XOFF=$(grep "xoffset=" config | awk -F "=" {'print $2'})
 fi
 
 
@@ -30,7 +31,7 @@ CONSTATE=$(nmcli -fields WIFI g)
 
 # HOPEFULLY you won't need this as often as I do
 # If there are more than 8 SSIDs, the menu will still only have 8 lines
-if [ "$LINENUM" > 8 ] && [[ "$CONSTATE" =~ "enabled" ]]; then
+if [ "$LINENUM" -gt 8 ] && [[ "$CONSTATE" =~ "enabled" ]]; then
 	LINENUM=8
 elif [[ "$CONSTATE" =~ "disabled" ]]; then
 	LINENUM=1
@@ -38,9 +39,9 @@ fi
 
 
 if [[ "$CONSTATE" =~ "enabled" ]]; then
-	TOGGLE=$(echo "toggle off")
+	TOGGLE="toggle off"
 elif [[ "$CONSTATE" =~ "disabled" ]]; then
-	TOGGLE=$(echo "toggle on")
+	TOGGLE="toggle on"
 fi
 
 
@@ -55,7 +56,7 @@ if [ "$CHENTRY" = "manual" ] ; then
 	# Manual entry of the SSID and password (if appplicable)
 	MSSID=$(echo "enter the SSID of the network (SSID,password)" | rofi -dmenu -p "Manual Entry: " -font "DejaVu Sans Mono 8" -lines 1)
 	# Separating the password from the entered string
-	MPASS=$(echo $MSSID | awk -F "," {'print $2'})
+	MPASS=$(echo "$MSSID" | awk -F "," '{print $2}')
 	
 	#echo "$MSSID"
 	#echo "$MPASS"
@@ -86,7 +87,7 @@ else
 	else
 		if [[ "$CHENTRY" =~ "WPA2" ]] || [[ "$CHENTRY" =~ "WEP" ]]; then
 			WIFIPASS=$(echo "if connection is stored, hit enter" | rofi -dmenu -p "password: " -lines 1 -font "DejaVu Sans Mono 8" )
-			echo $WIFIPASS
+			echo "$WIFIPASS"
 		fi
 		nmcli dev wifi con "$CHSSID" password "$WIFIPASS"
 	fi

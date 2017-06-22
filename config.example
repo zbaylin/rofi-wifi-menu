@@ -1,10 +1,1 @@
-# Config for rofi-wifi-menu
-
-# position values: 
-# 1 2 3
-# 8 0 4
-# 7 6 5 
-position=3
-yoffset=17
-xoffset=0
-fields=SSID,SECURITY
+config
