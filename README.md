@@ -30,6 +30,7 @@ A wifi menu for i3/openbox/etc. written in bash. Uses rofi and nmcli.
 ### Requirements
 
 * nmcli
+* iw
 * rofi ( _I may end up expanding compatibility to dmenu_ )
 * bash ( _but you probably already knew that_ )
 
