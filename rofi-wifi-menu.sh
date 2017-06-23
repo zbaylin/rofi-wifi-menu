@@ -19,7 +19,8 @@ elif [ -r ./config ]; then
 fi
 
 
-LIST=$(nmcli --fields "IN-USE,$FIELDS" device wifi list)
+
+LIST=$(nmcli --fields "$FIELDS" device wifi list | sed '/^--/d')
 # For some reason rofi always approximates character width 2 short... hmmm
 RWIDTH=$(($(echo "$LIST" | head -n 1 | awk '{print length($0); }')+2))
 # Dynamically change the height of the rofi menu
@@ -28,6 +29,10 @@ LINENUM=$(echo "$LIST" | wc -l)
 KNOWNCON=$(nmcli connection show)
 # Really janky way of telling if there is currently a connection
 CONSTATE=$(nmcli -fields WIFI g)
+
+CURRSSID=$(iwgetid -r)
+
+HIGHLINE=$(echo  "$(echo "$LIST" | awk -F "[  ]{2,}" '{print $1}' | grep -Fxn -m 1 "$CURRSSID" | awk -F ":" '{print $1}') + 1" | bc ) 
 
 # HOPEFULLY you won't need this as often as I do
 # If there are more than 8 SSIDs, the menu will still only have 8 lines
@@ -46,7 +51,7 @@ fi
 
 
 
-CHENTRY=$(echo -e "$TOGGLE\n$LIST\nmanual" | sed '/--/,+1 d' | uniq -u | rofi -dmenu -p "Wi-Fi SSID: " -lines $LINENUM -location $POSITION -yoffset $YOFF -xoffset $XOFF -font "DejaVu Sans Mono 8" -width -$RWIDTH)
+CHENTRY=$(echo -e "$TOGGLE\nmanual\n$LIST" | uniq -u | rofi -dmenu -p "Wi-Fi SSID: " -lines "$LINENUM" -a "$HIGHLINE" -location "$POSITION" -yoffset "$YOFF" -xoffset "$XOFF" -font "DejaVu Sans Mono 8" -width -"$RWIDTH")
 #echo "$CHENTRY"
 CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $2}')
 #echo "$CHSSID"
@@ -87,7 +92,6 @@ else
 	else
 		if [[ "$CHENTRY" =~ "WPA2" ]] || [[ "$CHENTRY" =~ "WEP" ]]; then
 			WIFIPASS=$(echo "if connection is stored, hit enter" | rofi -dmenu -p "password: " -lines 1 -font "DejaVu Sans Mono 8" )
-			echo "$WIFIPASS"
 		fi
 		nmcli dev wifi con "$CHSSID" password "$WIFIPASS"
 	fi
