@@ -32,7 +32,9 @@ CONSTATE=$(nmcli -fields WIFI g)
 
 CURRSSID=$(iwgetid -r)
 
-HIGHLINE=$(echo  "$(echo "$LIST" | awk -F "[  ]{2,}" '{print $1}' | grep -Fxn -m 1 "$CURRSSID" | awk -F ":" '{print $1}') + 1" | bc ) 
+if [[ ! -z $CURRSSID ]]; then
+	HIGHLINE=$(echo  "$(echo "$LIST" | awk -F "[  ]{2,}" '{print $1}' | grep -Fxn -m 1 "$CURRSSID" | awk -F ":" '{print $1}') + 1" | bc ) 
+fi
 
 # HOPEFULLY you won't need this as often as I do
 # If there are more than 8 SSIDs, the menu will still only have 8 lines
@@ -53,7 +55,7 @@ fi
 
 CHENTRY=$(echo -e "$TOGGLE\nmanual\n$LIST" | uniq -u | rofi -dmenu -p "Wi-Fi SSID: " -lines "$LINENUM" -a "$HIGHLINE" -location "$POSITION" -yoffset "$YOFF" -xoffset "$XOFF" -font "DejaVu Sans Mono 8" -width -"$RWIDTH")
 #echo "$CHENTRY"
-CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $2}')
+CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $1}')
 #echo "$CHSSID"
 
 # If the user inputs "manual" as their SSID in the start window, it will bring them to this screen
