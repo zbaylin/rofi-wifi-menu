@@ -3,13 +3,15 @@
 # Starts a scan of available broadcasting SSIDs
 # nmcli dev wifi rescan
 
-if [ ! -r ./config ]; then
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [ ! -r "$DIR/config" ]; then
 	echo "WARNING: config file not found! Using default values."
 	FIELDS=SSID,SECURITY
 	POSITION=0
 	YOFF=0
 	XOFF=0
-elif [ -r ./config ]; then
+elif [ -r "$DIR/config" ]; then
 	# Get values from config
 	source ./config
 #	FIELDS=$(grep "fields=" config | awk -F "=" {'print $2'})
