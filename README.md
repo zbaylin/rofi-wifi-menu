@@ -88,8 +88,8 @@ fields choose what is displayed by the menu. The available fields are as follows
 
 ✔️ Add ability to configure the script externally
 
+✔️ Use rofi highlighting
+
 ❌ Add more forms of security (PEAP, etc.)
 
 ❌ Remove duplicate APs
-
-❌ Use rofi highlighting
