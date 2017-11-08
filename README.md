@@ -50,6 +50,11 @@ git clone https://github.com/zbaylin/rofi-wifi-menu.git
 sh "./rofi-wifi-menu.sh"
 ```
 
+* or you can just use Make:
+```
+make install PREFIX=~/.local
+```
+
 ### Configuration
 rofi-wifi-menu has an example configuration file in the repository. It will run without it, but will warn you if it does not exist.
 
