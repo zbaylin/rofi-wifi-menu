@@ -5,23 +5,19 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-if [ ! -r "$DIR/config" ]; then
-	echo "WARNING: config file not found! Using default values."
-	FIELDS=SSID,SECURITY
-	POSITION=0
-	YOFF=0
-	XOFF=0
-	FONT="DejaVu Sans Mono 8"
-elif [ -r "$DIR/config" ]; then
-	# Get values from config
+FIELDS=SSID,SECURITY
+POSITION=0
+YOFF=0
+XOFF=0
+FONT="DejaVu Sans Mono 8"
+
+if [ -r "$DIR/config" ]; then
 	source ./config
-#	FIELDS=$(grep "fields=" config | awk -F "=" {'print $2'})
-#	POSITION=$(grep "position=" config | awk -F "=" {'print $2'})
-#	YOFF=$(grep "yoffset=" config | awk -F "=" {'print $2'})
-#	XOFF=$(grep "xoffset=" config | awk -F "=" {'print $2'})
+elif [ -r "$HOME/.config/rofi/wifi" ]; then
+	source "$HOME/.config/rofi/wifi"
+else
+	echo "WARNING: config file not found! Using default values."
 fi
-
-
 
 LIST=$(nmcli --fields "$FIELDS" device wifi list | sed '/^--/d')
 # For some reason rofi always approximates character width 2 short... hmmm
