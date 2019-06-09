@@ -29,7 +29,7 @@ KNOWNCON=$(nmcli connection show)
 # Really janky way of telling if there is currently a connection
 CONSTATE=$(nmcli -fields WIFI g)
 
-CURRSSID=$(iwgetid -r)
+CURRSSID=$(LANGUAGE=C nmcli -t -f active,ssid dev wifi | awk -F: '$1 ~ /^yes/ {print $2}')
 
 if [[ ! -z $CURRSSID ]]; then
 	HIGHLINE=$(echo  "$(echo "$LIST" | awk -F "[  ]{2,}" '{print $1}' | grep -Fxn -m 1 "$CURRSSID" | awk -F ":" '{print $1}') + 1" | bc )
