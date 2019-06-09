@@ -12,7 +12,7 @@ XOFF=0
 FONT="DejaVu Sans Mono 8"
 
 if [ -r "$DIR/config" ]; then
-	source ./config
+	source "$DIR/config"
 elif [ -r "$HOME/.config/rofi/wifi" ]; then
 	source "$HOME/.config/rofi/wifi"
 else
