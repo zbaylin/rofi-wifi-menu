@@ -1,9 +1,9 @@
 # Config for rofi-wifi-menu
 
-# position values: 
+# position values:
 # 1 2 3
 # 8 0 4
-# 7 6 5 
+# 7 6 5
 POSITION=3
 
 #y-offset

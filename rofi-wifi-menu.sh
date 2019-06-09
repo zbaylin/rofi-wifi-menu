@@ -32,7 +32,7 @@ CONSTATE=$(nmcli -fields WIFI g)
 CURRSSID=$(iwgetid -r)
 
 if [[ ! -z $CURRSSID ]]; then
-	HIGHLINE=$(echo  "$(echo "$LIST" | awk -F "[  ]{2,}" '{print $1}' | grep -Fxn -m 1 "$CURRSSID" | awk -F ":" '{print $1}') + 1" | bc ) 
+	HIGHLINE=$(echo  "$(echo "$LIST" | awk -F "[  ]{2,}" '{print $1}' | grep -Fxn -m 1 "$CURRSSID" | awk -F ":" '{print $1}') + 1" | bc )
 fi
 
 # HOPEFULLY you won't need this as often as I do
@@ -71,7 +71,7 @@ if [ "$CHENTRY" = "manual" ] ; then
 	MSSID=$(echo "enter the SSID of the network (SSID,password)" | rofi -dmenu -p "Manual Entry: " -font "$FONT" -lines 1)
 	# Separating the password from the entered string
 	MPASS=$(echo "$MSSID" | awk -F "," '{print $2}')
-	
+
 	#echo "$MSSID"
 	#echo "$MPASS"
 
@@ -87,7 +87,7 @@ elif [ "$CHENTRY" = "toggle on" ]; then
 
 elif [ "$CHENTRY" = "toggle off" ]; then
 	nmcli radio wifi off
-	
+
 else
 
 	# If the connection is already in use, then this will still be able to get the SSID
