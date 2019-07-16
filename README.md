@@ -47,7 +47,8 @@ A wifi menu for i3/openbox/etc. written in bash. Uses rofi and nmcli.
 ```
 cd DESIRED_DIRECTORY
 git clone https://github.com/zbaylin/rofi-wifi-menu.git
-sh "./rofi-wifi-menu.sh"
+cd rofi-wifi-menu
+bash "./rofi-wifi-menu.sh"
 ```
 
 ### Configuration
