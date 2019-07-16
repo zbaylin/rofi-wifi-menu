@@ -12,7 +12,7 @@ XOFF=0
 FONT="DejaVu Sans Mono 8"
 
 if [ -r "$DIR/config" ]; then
-	source ./config
+	source "$DIR/config"
 elif [ -r "$HOME/.config/rofi/wifi" ]; then
 	source "$HOME/.config/rofi/wifi"
 else
@@ -29,10 +29,10 @@ KNOWNCON=$(nmcli connection show)
 # Really janky way of telling if there is currently a connection
 CONSTATE=$(nmcli -fields WIFI g)
 
-CURRSSID=$(iwgetid -r)
+CURRSSID=$(LANGUAGE=C nmcli -t -f active,ssid dev wifi | awk -F: '$1 ~ /^yes/ {print $2}')
 
 if [[ ! -z $CURRSSID ]]; then
-	HIGHLINE=$(echo  "$(echo "$LIST" | awk -F "[  ]{2,}" '{print $1}' | grep -Fxn -m 1 "$CURRSSID" | awk -F ":" '{print $1}') + 1" | bc ) 
+	HIGHLINE=$(echo  "$(echo "$LIST" | awk -F "[  ]{2,}" '{print $1}' | grep -Fxn -m 1 "$CURRSSID" | awk -F ":" '{print $1}') + 1" | bc )
 fi
 
 # HOPEFULLY you won't need this as often as I do
@@ -50,19 +50,11 @@ elif [[ "$CONSTATE" =~ "disabled" ]]; then
 	TOGGLE="toggle on"
 fi
 
-eval FIELDSARR=( $(cat ./config | awk 'BEGIN { FS=","; OFS="\n" } /^FIELDS/ { $1 = substr($1, 8); print $0; }') )
 
-for i in "${!FIELDSARR[@]}"; do
-	if [[ "${FIELDSARR[$i]}" = "SSID" ]]; then
-		SSID_POS="${i}";
-	fi
-done
-
-let AWKSSIDPOS=$SSID_POS+1
 
 CHENTRY=$(echo -e "$TOGGLE\nmanual\n$LIST" | uniq -u | rofi -dmenu -p "Wi-Fi SSID: " -lines "$LINENUM" -a "$HIGHLINE" -location "$POSITION" -yoffset "$YOFF" -xoffset "$XOFF" -font "$FONT" -width -"$RWIDTH")
 #echo "$CHENTRY"
-CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $'$AWKSSIDPOS'}')
+CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $1}')
 #echo "$CHSSID"
 
 # If the user inputs "manual" as their SSID in the start window, it will bring them to this screen
@@ -71,7 +63,7 @@ if [ "$CHENTRY" = "manual" ] ; then
 	MSSID=$(echo "enter the SSID of the network (SSID,password)" | rofi -dmenu -p "Manual Entry: " -font "$FONT" -lines 1)
 	# Separating the password from the entered string
 	MPASS=$(echo "$MSSID" | awk -F "," '{print $2}')
-	
+
 	#echo "$MSSID"
 	#echo "$MPASS"
 
@@ -87,7 +79,7 @@ elif [ "$CHENTRY" = "toggle on" ]; then
 
 elif [ "$CHENTRY" = "toggle off" ]; then
 	nmcli radio wifi off
-	
+
 else
 
 	# If the connection is already in use, then this will still be able to get the SSID

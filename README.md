@@ -31,17 +31,16 @@ A wifi menu for i3/openbox/etc. written in bash. Uses rofi and nmcli.
 
 * nmcli
 * iw
-* wireless_tools
 * rofi ( _I may end up expanding compatibility to dmenu_ )
 * bash ( _but you probably already knew that_ )
 
 #### _Optional_
 
 * lemonbar (or some other bar, i.e. tint2)
-* openbox/i3/etc. 
+* openbox/i3/etc.
 
 ### Installation
-* make sure you have all the dependencies installed 
+* make sure you have all the dependencies installed
 
 * run the following commands in your terminal. Replace uppercase variables with personal choice
 ```
@@ -54,7 +53,7 @@ bash "./rofi-wifi-menu.sh"
 ### Configuration
 rofi-wifi-menu has an example configuration file in the repository. It will run without it, but will warn you if it does not exist.
 
-To configure rofi-wifi-menu, first cd into the directory it is installed into. Then edit the file `config.example`. 
+To configure rofi-wifi-menu, first cd into the directory it is installed into. Then edit the file `config.example`.
 It should contain the following variables:
 * position
 * y-offset
@@ -64,17 +63,17 @@ It should contain the following variables:
 #### position
 position can be configured where the number represents the position on this screen in this way
 
-| *Screen* | Left | Right | Center |
-|---|---|---|---|
-| **Top** | 1 | 2 | 3 |
-| **Center** | 8 | 0 | 4 |
-| **Bottom** | 7 | 6 | 5 |
+| *Screen*   | Left | Right | Center |
+|------------|------|-------|--------|
+| **Top**    | 1    | 2     | 3      |
+| **Center** | 8    | 0     | 4      |
+| **Bottom** | 7    | 6     | 5      |
 
 #### y-offset
 
 y-offset is measured in pixels. A positive value moves the window downward, while a negative value moves it upward.
 
-#### x-offset 
+#### x-offset
 
 x-offset is measured in pixels. A positive value move the window rightward, while a negative value moves it leftward.
 
