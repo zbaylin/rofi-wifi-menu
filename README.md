@@ -50,6 +50,11 @@ cd rofi-wifi-menu
 bash "./rofi-wifi-menu.sh"
 ```
 
+The package is also available on the AUR:
+```
+yay -S rofi-wifi-menu-git
+```
+
 ### Configuration
 rofi-wifi-menu has an example configuration file in the repository. It will run without it, but will warn you if it does not exist.
 
@@ -59,6 +64,11 @@ It should contain the following variables:
 * y-offset
 * x-offset
 * fields
+
+You can also rename your config file to ```wifi``` and put it here:
+```
+$HOME/.config/rofi/wifi
+```
 
 #### position
 position can be configured where the number represents the position on this screen in this way
