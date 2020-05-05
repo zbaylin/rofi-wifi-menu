@@ -19,7 +19,7 @@ else
 	echo "WARNING: config file not found! Using default values."
 fi
 
-LIST=$(nmcli --fields "$FIELDS" device wifi list | sed '/^--/d')
+LIST=$(nmcli --fields "$FIELDS" device wifi list | sed '/^--/d' | awk -F'  +' '{ if (!seen[$1]++) print})
 # For some reason rofi always approximates character width 2 short... hmmm
 RWIDTH=$(($(echo "$LIST" | head -n 1 | awk '{print length($0); }')+2))
 # Dynamically change the height of the rofi menu
@@ -52,7 +52,7 @@ fi
 
 
 
-CHENTRY=$(echo -e "$TOGGLE\nmanual\n$LIST" | uniq -u | rofi -dmenu -p "Wi-Fi SSID: " -lines "$LINENUM" -a "$HIGHLINE" -location "$POSITION" -yoffset "$YOFF" -xoffset "$XOFF" -font "$FONT" -width -"$RWIDTH")
+CHENTRY=$(echo -e "$TOGGLE\nmanual\n$LIST" | uniq -u | rofi -dmenu -i -p "Wi-Fi SSID: " -lines "$LINENUM" -a "$HIGHLINE" -location "$POSITION" -yoffset "$YOFF" -xoffset "$XOFF" -font "$FONT" -width -"$RWIDTH")
 #echo "$CHENTRY"
 CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $1}')
 #echo "$CHSSID"
