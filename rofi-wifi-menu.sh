@@ -2,6 +2,7 @@
 
 # Starts a scan of available broadcasting SSIDs
 # nmcli dev wifi rescan
+set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
